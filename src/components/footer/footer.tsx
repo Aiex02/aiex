@@ -19,15 +19,15 @@ export function Footer() {
           </li>
           <li>
             <a
-              href="#portfolio"
+              href="#projects"
               className="text-sm hover:text-gray-400 transition duration-300"
             >
-              Portfólio
+              Projects
             </a>
           </li>
           <li>
             <a
-              href="#contato"
+              href="#contact"
               className="text-sm hover:text-gray-400 transition duration-300"
             >
               Contato

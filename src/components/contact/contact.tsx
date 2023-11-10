@@ -16,7 +16,7 @@ export function Contact() {
   };
 
   return (
-    <div className='bg-zinc-800 '>
+    <div id='contact' className='bg-zinc-800 ' >
         <div className="max-w-7xl mx-auto p-12 bg-zinc-800 text-white">
           <div className='mt-28 shadow-2xl p-10'>
               <h1 className="text-3xl font-bold text-center mb-6">Entre em Contato</h1>
@@ -61,7 +61,7 @@ export function Contact() {
                     <Field as="textarea" id="message" name="message" className="w-full p-2 border border-gray-300 rounded text-black" />
                     <ErrorMessage name="message" component="div" className="text-red-500" />
                   </div>
-                  <button type="submit" className="w-full bg-slate-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
+                  <button  type="submit" className="w-full bg-slate-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
                     Enviar
                   </button>
                 </Form>

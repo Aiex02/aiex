@@ -35,14 +35,19 @@ export function Hero() {
     };
   }, []);
 
+  const download = ()=>{
+    const resumeURL = 'https://drive.google.com/file/d/1JxxuFo7N_ifY22WLptPRNkxrKu9brhDX/view?usp=sharing'
+    window.open(resumeURL, "_blank");
+  }
+
   return (
-    <div className="bg-zinc-800 p-8 sm:p-10 md:p-12 lg:p-16 xl:p-20 flex flex-col items-center justify-center">
-      <div className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center">
+    <div id="home" className="bg-zinc-800 p-8 sm:p-10 md:p-12 lg:p-16 xl:p-20 flex flex-col items-center justify-center">
+      <div className="text-white mt-64 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center">
         {text}
         {cursorVisible && <span>|</span>}
       </div>
       <div>
-        <button className="mt-6 sm:mt-8 p-3 sm:p-4 bg-slate-700 text-white text-base sm:text-lg font-semibold rounded-full flex items-center space-x-2 hover:bg-blue-600">
+        <button onClick={download} className="mt-6 sm:mt-8 p-3 sm:p-4 bg-slate-700 text-white text-base sm:text-lg font-semibold rounded-full flex items-center space-x-2 hover:bg-blue-600" >
           <span>CV</span>
           <FaDownload />
         </button>
