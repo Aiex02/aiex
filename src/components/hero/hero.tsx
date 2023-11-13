@@ -1,12 +1,11 @@
-"use client";
-
+'use client'
 import React, { useEffect, useState } from "react";
 import { FaDownload } from "react-icons/fa";
 
 export function Hero() {
-  const [text, setText] = useState("");
-  const fullText = "Hi, I'm Guilherme Aiex,\n a Frontend Developer !";
-  const [cursorVisible, setCursorVisible] = useState(true);
+  const [text, setText] = useState<string>("");
+  const fullText: string = "Hi, I'm Guilherme Aiex,\n a Frontend Developer !";
+  const [cursorVisible, setCursorVisible] = useState<boolean>(true);
 
   useEffect(() => {
     let currentIndex = 0;
@@ -35,6 +34,11 @@ export function Hero() {
       clearInterval(cursorInterval);
     };
   }, []);
+
+  const download = ()=>{
+    const resumeURL = 'https://drive.google.com/file/d/1JxxuFo7N_ifY22WLptPRNkxrKu9brhDX/view?usp=sharing'
+    window.open(resumeURL, "_blank");
+  }
 
   return (
     <div id="home" className="bg-zinc-800 p-8 md:p-16 lg:p-24 xl:p-32 flex flex-col items-center justify-center">
