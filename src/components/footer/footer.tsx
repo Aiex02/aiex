@@ -14,23 +14,23 @@ export function Footer() {
               href="#home"
               className="text-sm hover:text-gray-400 transition duration-300"
             >
-              Início
+              Home
             </a>
           </li>
           <li>
             <a
-              href="#portfolio"
+              href="#about"
               className="text-sm hover:text-gray-400 transition duration-300"
             >
-              Portfólio
+              About
             </a>
           </li>
           <li>
             <a
-              href="#contato"
+              href="#contact"
               className="text-sm hover:text-gray-400 transition duration-300"
             >
-              Contato
+              Contact
             </a>
           </li>
         </ul>
@@ -38,13 +38,13 @@ export function Footer() {
       <div className="border-gray-700">
         <div className="max-w-7xl mx-auto flex items-center justify-center p-4 sm:p-6 lg:p-8">
           <div className="flex space-x-4 text-2xl">
-            <a href="#" className="text-gray-400 hover:text-white">
+            <a href="https://wa.me/5524992712340" target="_blank" className="text-gray-400 hover:text-white">
               <FaWhatsapp />
             </a>
-            <a href="#" className="text-gray-400 hover:text-white">
+            <a href="https://www.linkedin.com/in/guilherme-medeiros-aiex-0635b421b/" target="_blank" className="text-gray-400 hover:text-white">
               <FaLinkedin />
             </a>
-            <a href="#" className="text-gray-400 hover:text-white">
+            <a href="https://github.com/Aiex02" target="_blank" className="text-gray-400 hover:text-white">
               <FaGithub />
             </a>
           </div>
