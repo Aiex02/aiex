@@ -1,73 +1,141 @@
 'use client'
-import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import 'tailwindcss/tailwind.css';
 
-const ContactSchema = Yup.object().shape({
-  name: Yup.string().required('O nome é obrigatório'),
-  email: Yup.string().email('E-mail inválido').required('O e-mail é obrigatório'),
-  phone: Yup.string().matches(/^[0-9]+$/, 'Número de celular inválido').required('O celular é obrigatório'),
-  message: Yup.string().required('A mensagem é obrigatória'),
-});
+import React, { useState } from 'react';
 
-export function Contact() {
-  const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
-    setSubmitting(false);
+const EmailForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors: Partial<typeof errors> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Nome é obrigatório';
+      isValid = false;
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'E-mail é obrigatório';
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'E-mail inválido';
+      isValid = false;
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Mensagem é obrigatória';
+      isValid = false;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      ...newErrors,
+    }));
+
+    return isValid;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      try {
+        // Enviar dados para a API
+        const response = await fetch('/api/sendEmail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          console.log('E-mail enviado com sucesso');
+        } else {
+          console.log('Erro ao enviar o e-mail');
+        }
+      } catch (error) {
+        console.error('Erro ao enviar o e-mail:', error);
+      }
+    } else {
+      console.log('Formulário inválido');
+    }
   };
 
   return (
-    <div id='contact' className='bg-zinc-800 ' >
-        <div className="max-w-7xl mx-auto p-12 bg-zinc-800 text-white">
-          <div className='mt-28 shadow-2xl p-10'>
-              <h1 className="text-3xl font-bold text-center mb-6">Entre em Contato</h1>
-              <Formik
-                initialValues={{
-                  name: '',
-                  email: '',
-                  phone: '',
-                  message: '',
-                }}
-                validationSchema={ContactSchema}
-                onSubmit={handleSubmit}
-              >
-                <Form className="space-y-4">
-                  <div className="flex flex-col md:flex-row md:space-x-4">
-                    <div className="w-full md:w-1/2">
-                      <label htmlFor="name" className="block font-medium">
-                        Nome
-                      </label>
-                      <Field type="text" id="name" name="name" className="w-full p-2 border border-gray-300 rounded text-black" />
-                      <ErrorMessage name="name" component="div" className="text-red-500" />
-                    </div>
-                    <div className="w-full md:w-1/2">
-                      <label htmlFor="phone" className="block font-medium">
-                        Celular
-                      </label>
-                      <Field type="text" id="phone" name="phone" className="w-full p-2 border border-gray-300 rounded text-black" />
-                      <ErrorMessage name="phone" component="div" className="text-red-500" />
-                    </div>
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block font-medium">
-                      E-mail
-                    </label>
-                    <Field type="email" id="email" name="email" className="w-full p-2 border border-gray-300 rounded text-black" />
-                    <ErrorMessage name="email" component="div" className="text-red-500" />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="block font-medium">
-                      Mensagem
-                    </label>
-                    <Field as="textarea" id="message" name="message" className="w-full p-2 border border-gray-300 rounded text-black" />
-                    <ErrorMessage name="message" component="div" className="text-red-500" />
-                  </div>
-                  <button  type="submit" className="w-full bg-slate-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600">
-                    Enviar
-                  </button>
-                </Form>
-              </Formik>
+    <div id='contact' className="bg-zinc-800 py-60 flex items-center justify-center">
+      <div className="bg-zinc-800 p-12 shadow-2xl w-full md:mx-96">
+        <h2 className="text-2xl p-2 text-center font-semibold text-white">Contato</h2>
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8">
+          <div className="mb-4">
+            <label htmlFor="name" className="block  text-sm font-bold mb-2 text-white">
+              Nome:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            <span className="text-red-500 text-xs">{errors.name}</span>
           </div>
-        </div>
+
+          <div className="mb-4">
+            <label htmlFor="email" className="block  text-sm font-bold mb-2 text-white">
+              E-mail:
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            <span className="text-red-500 text-xs">{errors.email}</span>
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="message" className="block text-sm font-bold mb-2 text-white">
+              Mensagem:
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2 leading-tight focus:outline-none focus:shadow-outline"
+            />
+            <span className="text-red-500 text-xs">{errors.message}</span>
+          </div>
+
+          <button type="submit" className="bg-blue-500 w-full text-white px-4 py-2 rounded">
+            Enviar
+          </button>
+        </form>
+      </div>
     </div>
   );
-}
+};
+
+export default EmailForm;
