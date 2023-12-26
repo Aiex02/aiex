@@ -1,20 +1,24 @@
+import Link from "next/link";
 import React from "react";
 
 interface SquareProps {
   title: string;
   description: string;
+  link: string
 }
 
-const Square: React.FC<SquareProps> = ({ title, description }) => {
+const Square: React.FC<SquareProps> = ({ title, description, link }) => {
   return (
     <div className="bg-zinc-800 p-4 shadow-2xl rounded-lg text-white flex flex-col justify-between">
       <div>
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
         <p>{description}</p>
       </div>
-      <button className="mt-8 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
-        View Project
-      </button>
+      <Link target="_blank" href={link}>
+        <button className="mt-8 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+          View Project
+        </button>
+      </Link>
     </div>
   );
 };
@@ -22,13 +26,16 @@ const Square: React.FC<SquareProps> = ({ title, description }) => {
 export function Projects() {
   const squaresInfo = [
     {
-      title: "Consultec site",
+      title: "Alfa Lógica",
       description:"Using Next.Js for project a website",
+      link: "https://alfa-logica.vercel.app/pt"
     },
     {
-      title: "Tax calculation app",
-      description: "Using React-native for tax calculation app",
+      title: "Alfa Ritll",
+      description:"Using Next.Js for project a website",
+      link: "https://alfa-lake.vercel.app/pt"
     },
+    
   ];
 
   return (
@@ -42,6 +49,7 @@ export function Projects() {
             key={index}
             title={square.title}
             description={square.description}
+            link={square.link}
           />
         ))}
       </div>

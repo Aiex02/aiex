@@ -33,13 +33,9 @@ export function Hero() {
     return () => {
       clearInterval(cursorInterval);
     };
-  }, []);
-
-  const download = ()=>{
-    const resumeURL = 'https://drive.google.com/file/d/1JxxuFo7N_ifY22WLptPRNkxrKu9brhDX/view?usp=sharing'
-    window.open(resumeURL, "_blank");
   }
-
+  );
+  
   return (
     <div id="home" className="bg-zinc-800 p-8 md:p-16 lg:p-24 xl:p-32 flex flex-col items-center justify-center">
       <div className="text-white mt-40 text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-center">

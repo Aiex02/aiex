@@ -16,6 +16,10 @@ const EmailForm: React.FC = () => {
     message: '',
   });
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // Estado para controlar o envio em andamento
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
@@ -56,9 +60,10 @@ const EmailForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (validateForm()) {
+    if (!isSubmitting && validateForm()) {
+      setIsSubmitting(true); // Inicia o envio
+
       try {
-        // Enviar dados para a API
         const response = await fetch('/api/sendEmail', {
           method: 'POST',
           headers: {
@@ -68,25 +73,30 @@ const EmailForm: React.FC = () => {
         });
 
         if (response.ok) {
-          console.log('E-mail enviado com sucesso');
+          setSubmissionMessage('E-mail enviado com sucesso');
+          setIsSubmitted(true);
+          setFormData({ name: '', email: '', message: '' });
         } else {
-          console.log('Erro ao enviar o e-mail');
+          setSubmissionMessage('Erro ao enviar o e-mail');
+          setIsSubmitted(true);
         }
       } catch (error) {
         console.error('Erro ao enviar o e-mail:', error);
+      } finally {
+        setIsSubmitting(false); // Completa o envio
       }
     } else {
-      console.log('Formulário inválido');
+      console.log('Formulário inválido ou envio em andamento');
     }
   };
 
   return (
-    <div id='contact' className="bg-zinc-800 py-60 flex items-center justify-center">
-      <div className="bg-zinc-800 p-12 shadow-2xl w-full md:mx-96">
+    <div id='contact' className="bg-zinc-800 py-20 flex items-center justify-center">
+      <div className="bg-zinc-800 p-4 shadow-2xl w-full md:mx-96">
         <h2 className="text-2xl p-2 text-center font-semibold text-white">Contato</h2>
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8">
-          <div className="mb-4">
-            <label htmlFor="name" className="block  text-sm font-bold mb-2 text-white">
+        <form onSubmit={handleSubmit} className="p-10 mx-auto mb-10">
+          <div className="mb-6">
+            <label htmlFor="name" className="block text-sm font-bold mb-2 text-white">
               Nome:
             </label>
             <input
@@ -100,8 +110,8 @@ const EmailForm: React.FC = () => {
             <span className="text-red-500 text-xs">{errors.name}</span>
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="email" className="block  text-sm font-bold mb-2 text-white">
+          <div className="mb-6">
+            <label htmlFor="email" className="block text-sm font-bold mb-2 text-white">
               E-mail:
             </label>
             <input
@@ -115,7 +125,7 @@ const EmailForm: React.FC = () => {
             <span className="text-red-500 text-xs">{errors.email}</span>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-6">
             <label htmlFor="message" className="block text-sm font-bold mb-2 text-white">
               Mensagem:
             </label>
@@ -129,10 +139,17 @@ const EmailForm: React.FC = () => {
             <span className="text-red-500 text-xs">{errors.message}</span>
           </div>
 
-          <button type="submit" className="bg-blue-500 w-full text-white px-4 py-2 rounded">
-            Enviar
+          <button
+            type="submit"
+            className={`bg-blue-500 w-full text-white px-4 py-2 rounded ${
+              isSubmitting ? 'opacity-50 pointer-events-none' : ''
+            }`}
+          >
+            {isSubmitting ? 'Enviando...' : 'Enviar'}
           </button>
         </form>
+
+        {isSubmitted && <p className="text-white text-center mt-2">{submissionMessage}</p>}
       </div>
     </div>
   );
